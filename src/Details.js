@@ -1,6 +1,6 @@
 import { Component } from "react";
 // ! Importatnt: change useHistory to useNavigate in v6
-import { useLocation, useHistory, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
 import ThemeContext from "./ThemeContext";
@@ -68,9 +68,9 @@ class Details extends Component {
 function withRouter(Component) {
   function ComponentWithRouterProp(props) {
     let location = useLocation();
-    let history = useHistory();
+    let navigate = useNavigate();
     let params = useParams();
-    return <Component {...props} router={{ location, history, params }} />;
+    return <Component {...props} router={{ location, navigate, params }} />;
   }
 
   return ComponentWithRouterProp;
