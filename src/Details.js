@@ -1,5 +1,6 @@
 import { Component } from "react";
-import { withRouter } from "react-router-dom";
+// ! Importatnt: change useHistory to useNavigate in v6
+import { useLocation, useHistory, useParams } from "react-router-dom";
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
 import ThemeContext from "./ThemeContext";
@@ -10,7 +11,7 @@ class Details extends Component {
 
   async componentDidMount() {
     const res = await fetch(
-      `http://pets-v2.dev-apis.com/pets?id=${this.props.match.params.id}`
+      `http://pets-v2.dev-apis.com/pets?id=${this.props.router.params.id}`
     );
     const json = await res.json();
     this.setState(Object.assign({ loading: false }, json.pets[0]));
@@ -61,6 +62,18 @@ class Details extends Component {
       </div>
     );
   }
+}
+
+// create a withRouter using hooks
+function withRouter(Component) {
+  function ComponentWithRouterProp(props) {
+    let location = useLocation();
+    let history = useHistory();
+    let params = useParams();
+    return <Component {...props} router={{ location, history, params }} />;
+  }
+
+  return ComponentWithRouterProp;
 }
 
 const DetailsWithRouter = withRouter(Details);
